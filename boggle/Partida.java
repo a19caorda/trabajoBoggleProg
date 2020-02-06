@@ -20,7 +20,7 @@ import sun.security.util.Length;
  * Métodos:
  * 	-iniciarPartida   <-- Se encarga de inicializar la partida y gestionar los turnos de los jugadores.
  * 	-decideGanador    <-- Lee la puntuación de los jugadores de la partida y devuelve el que tenga la 
- * 												puntuación más alta.
+ *                        puntuación más alta.
  * 
  * @author David Fontalba
  * @version 1.0.
