@@ -1,4 +1,4 @@
-package Boggle;
+package boggle;
 
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -56,16 +56,18 @@ public class Partida {
 			
 			String aux;	// Auxiliar para almacenar los nombres de los jugadores.
 			
-			Jugador jugadores[] = new Jugador[numJugadores];	// Defino el tamaño del array.
+			this.jugadores = new Jugador[numJugadores];	// Defino el tamaño del array.
 			
 			// Pido nombres de tantos jugadores como número de jugadores halla.
 			for (int i = 0; i < numJugadores; i++) {
 				System.out.print("Introduce el nombre del jugador " + (i+1) + ": ");
 				aux = s.nextLine();
 				
-				this.jugadores[i] = Jugador(aux);
+				this.jugadores[i] = new Jugador(aux);
 				System.out.println();	// Salto de línea.
-			}
+            }
+            
+            s.close();
 			
 		} else {	// numJugadores es menor que 0, muestra un mensaje de error.
 			JOptionPane.showMessageDialog(null, "ERROR: El número de jugadores tiene que ser mayor que 0.");
@@ -79,9 +81,9 @@ public class Partida {
 			System.out.println("Prepárate, la ronda " + i+1 + " va a comenzar.");
 			
 			// Bucle para los turnos
-			for (int j = 0; j < this.jugadores[].length; j++) {
+			for (int j = 0; j < this.jugadores.length; j++) {
 				System.out.println("Es el turno de " + this.jugadores[j] + ".");
-				Jugador.this.jugadores[j].inicioTurno();
+				jugadores[j].inicioTurno();
 				System.out.println("Fin del turno " + j+1 + ".");
 				
 			}
@@ -95,7 +97,7 @@ public class Partida {
 		int aux = 0; // Almacena la puntuación máxima
 		
 		// Bucle para leer la puntuación de los jugadores
-		for (int i = 0; i < this.jugadores[].length; i++) {
+		for (int i = 0; i < this.jugadores.length; i++) {
 			
 			//Si el jugador a leer tiene más puntuación
 			if (this.jugadores[i].puntuacion > aux) {
@@ -117,17 +119,17 @@ public class Partida {
 			for (int i = 0; i < ganador.size(); i++) {
 				// El último ganador de la lista
 				if (i+1 == ganador.size()) {
-					System.out.print( "y " + this.jugadores.[ganador.get(i)].nombre + "." );
+					System.out.print( "y " + this.jugadores[ganador.get(i)].nombre + "." );
 					
 				// El resto de ganadores
 				} else {
-					System.out.print( this.jugadores.[ganador.get(i)].nombre + ", " );
+					System.out.print( this.jugadores[ganador.get(i)].nombre + ", " );
 				}
 				
 			}
 		// Si solo hay un ganador
 		} else {
-			System.out.print("Felicidades " + this.jugadores.[ganador.get(0)].nombre + ", ¡Has ganado!");
+			System.out.print("Felicidades " + this.jugadores[ganador.get(0)].nombre + ", ¡Has ganado!");
 		}
 	}
 	
