@@ -8,7 +8,8 @@ import java.awt.event.KeyEvent;
 import java.awt.AWTException;
 
 /**
- * La clase Jugador se encarga de mantener el estado de cada jugador y de iniciar el turno 
+ * La clase Jugador se encarga de mantener el estado de cada jugador y de
+ * iniciar el turno
  * 
  * @author David Castilla Ortiz
  * @version 1.0.0
@@ -21,10 +22,20 @@ public class Jugador {
     public Dado dado;
     private final int TURNO = 180;
 
+    /**
+     * Constructor para crear un jugador
+     * 
+     * @param nombre Nombre que se le dará al Jugador.
+     */
     public Jugador(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     * inicioTurno se encarga de iniciar el turno y seguir pidiendo palabras,
+     * despues filtrandolas y, ya por ultimo, sumando los puntos que tiene de las
+     * palabras intrucidas.
+     */
     public void inicioTurno() {
 
         System.out.printf("----------------Empieza el turno de %s!----------------\n", this.nombre);
@@ -71,34 +82,48 @@ public class Jugador {
 
     }
 
+    /**
+     * 
+     * sumaPuntos se encarga de sumar los puntos de las palabras
+     * 
+     * @param palabras La lista de palabras que ya ha sido filtrada
+     * @return La suma de lo que puntua cada palabra
+     */
     private int sumaPuntos(ArrayList<String> palabras) {
 
         int resultadoFinal = 0;
 
         for (String palabra : palabras) {
             switch (palabra.length()) {
-                case 3:
-                case 4:
-                    resultadoFinal += 1;
-                    break;
-                case 5:
-                    resultadoFinal += 2;
-                    break;
-                case 6:
-                    resultadoFinal += 3;
-                    break;
-                case 7:
-                    resultadoFinal += 5;
-                    break;
-                default:
-                    resultadoFinal += 11;
-                    break;
+            case 3:
+            case 4:
+                resultadoFinal += 1;
+                break;
+            case 5:
+                resultadoFinal += 2;
+                break;
+            case 6:
+                resultadoFinal += 3;
+                break;
+            case 7:
+                resultadoFinal += 5;
+                break;
+            default:
+                resultadoFinal += 11;
+                break;
             }
         }
 
         return resultadoFinal;
     }
 
+    /**
+     * comprueba se encarga de comprobar que las palabras sean correctas
+     * y filtra las incorrectas.
+     * 
+     * @param aFiltrar La lista de palabras no filtradas
+     * @return La lista de palabras filtrada
+     */
     private ArrayList<String> comprueba(ArrayList<String> aFiltrar) {
 
         ArrayList<String> palabrasFiltradas = new ArrayList<>();
