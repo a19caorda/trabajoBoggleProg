@@ -11,15 +11,15 @@ import sun.security.util.Length;
  * Clase Partida. 
  * 
  * Atributos:
- * 	-maxRondas        <-- Almacena el número máximo de rondas que puede tener una partida.
- * 	-partidasCreadas  <-- Almacena un número entero que representa las veces que se han inicializado 
+ *  -maxRondas        <-- Almacena el número máximo de rondas que puede tener una partida.
+ *  -partidasCreadas  <-- Almacena un número entero que representa las veces que se han inicializado 
  *                        partidas.
- * 	-jugadores[]      <-- Array de objetos de tipo Jugador.
- * 	-numRondas        <-- Número entero.
+ *  -jugadores[]      <-- Array de objetos de tipo Jugador.
+ *  -numRondas        <-- Número entero.
  * 
  * Métodos:
- * 	-iniciarPartida   <-- Se encarga de inicializar la partida y gestionar los turnos de los jugadores.
- * 	-decideGanador    <-- Lee la puntuación de los jugadores de la partida y devuelve el que tenga la 
+ *  -iniciarPartida   <-- Se encarga de inicializar la partida y gestionar los turnos de los jugadores.
+ *  -decideGanador    <-- Lee la puntuación de los jugadores de la partida y devuelve el que tenga la 
  *                        puntuación más alta.
  * 
  * @author David Fontalba
