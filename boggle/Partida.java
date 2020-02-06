@@ -39,24 +39,24 @@ public class Partida {
     
     // se almacena numRondas.
     assert maxRondas >= numRondas && numRondas > 0;
-    if (maxRondas >= numRondas && numRondas > 0) {	// El número de rondas tiene que ser positivo y menor al máximo.
+    if (maxRondas >= numRondas && numRondas > 0) {  // El número de rondas tiene que ser positivo y menor al máximo.
       this.numRondas = numRondas;
 
-    } else if (numRondas > maxRondas) {	// Si el número de rondas es mayor al máximo, aplica el máximo.
+    } else if (numRondas > maxRondas) { // Si el número de rondas es mayor al máximo, aplica el máximo.
       this.numRondas = maxRondas;
 
-    } else {														// numRondas es menor que 0, muestra un mensaje de error.
+    } else {                            // numRondas es menor que 0, muestra un mensaje de error.
       JOptionPane.showMessageDialog(null, "ERROR: El número de rondas tiene que ser mayor que 0.");
     }
 
     // se almacenan jugadores
-    assert numJugadores > 0;		// El número de jugadores tiene que ser positivo.
+    assert numJugadores > 0;    // El número de jugadores tiene que ser positivo.
     if (numJugadores > 0) {
       Scanner s = new Scanner(System.in); // Scanner para leer los nombres de los jugadores.
 
-      String aux;	// Auxiliar para almacenar los nombres de los jugadores.
+      String aux; // Auxiliar para almacenar los nombres de los jugadores.
 
-      this.jugadores = new Jugador[numJugadores];	// Defino el tamaño del array.
+      this.jugadores = new Jugador[numJugadores]; // Defino el tamaño del array.
 
       // Pido nombres de tantos jugadores como número de jugadores halla.
       for (int i = 0; i < numJugadores; i++) {
@@ -68,7 +68,7 @@ public class Partida {
       }
 			s.close();
 
-    } else {	// numJugadores es menor que 0, muestra un mensaje de error.
+    } else {  // numJugadores es menor que 0, muestra un mensaje de error.
       JOptionPane.showMessageDialog(null, "ERROR: El número de jugadores tiene que ser mayor que 0.");
     }
   }
@@ -92,8 +92,8 @@ public class Partida {
   }
 
   public void decideGanador() {
-    ArrayList<Integer> ganador = new ArrayList<Integer>();   // Almacena la posición del jugador que tiene más puntuación
-    int aux = 0; // Almacena la puntuación máxima
+    ArrayList<Integer> ganador = new ArrayList<Integer>();  // Almacena la posición del jugador que tiene más puntuación
+    int aux = 0;  // Almacena la puntuación máxima
 
     // Bucle para leer la puntuación de los jugadores
     for (int i = 0; i < this.jugadores.length; i++) {
