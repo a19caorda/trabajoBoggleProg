@@ -5,10 +5,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import sun.security.util.Length;
-
 /**
- * Clase Partida. 
+ * Clase Partida.
  * 
  * Atributos:
  *  -maxRondas        <-- Almacena el número máximo de rondas que puede tener una partida.
@@ -36,21 +34,21 @@ public class Partida {
   private int numRondas;
 
   public Partida(int numJugadores, int numRondas) {
-    
+
     // se almacena numRondas.
     assert maxRondas >= numRondas && numRondas > 0;
-    if (maxRondas >= numRondas && numRondas > 0) {  // El número de rondas tiene que ser positivo y menor al máximo.
+    if (maxRondas >= numRondas && numRondas > 0) { // El número de rondas tiene que ser positivo y menor al máximo.
       this.numRondas = numRondas;
 
     } else if (numRondas > maxRondas) { // Si el número de rondas es mayor al máximo, aplica el máximo.
       this.numRondas = maxRondas;
 
-    } else {                            // numRondas es menor que 0, muestra un mensaje de error.
+    } else { // numRondas es menor que 0, muestra un mensaje de error.
       JOptionPane.showMessageDialog(null, "ERROR: El número de rondas tiene que ser mayor que 0.");
     }
 
     // se almacenan jugadores
-    assert numJugadores > 0;    // El número de jugadores tiene que ser positivo.
+    assert numJugadores > 0; // El número de jugadores tiene que ser positivo.
     if (numJugadores > 0) {
       Scanner s = new Scanner(System.in); // Scanner para leer los nombres de los jugadores.
 
@@ -60,15 +58,16 @@ public class Partida {
 
       // Pido nombres de tantos jugadores como número de jugadores halla.
       for (int i = 0; i < numJugadores; i++) {
-			  System.out.print("Introduce el nombre del jugador " + (i+1) + ": ");
-			  aux = s.nextLine();
+        System.out.print("Introduce el nombre del jugador " + (i + 1) + ": ");
+        aux = s.nextLine();
 
-			  this.jugadores[i] = new Jugador(aux);
-			  System.out.println();	// Salto de línea.
+        this.jugadores[i] = new Jugador(aux);
+        System.out.println(); // Salto de línea.
       }
-			s.close();
 
-    } else {  // numJugadores es menor que 0, muestra un mensaje de error.
+      s.close();
+
+    } else { // numJugadores es menor que 0, muestra un mensaje de error.
       JOptionPane.showMessageDialog(null, "ERROR: El número de jugadores tiene que ser mayor que 0.");
     }
   }
@@ -77,37 +76,37 @@ public class Partida {
 
     // Bucle para las rondas
     for (int i = 0; i < this.numRondas; i++) {
-      System.out.println("Prepárate, la ronda " + i+1 + " va a comenzar.");
+      System.out.println("Prepárate, la ronda " + i + 1 + " va a comenzar.");
 
       // Bucle para los turnos
       for (int j = 0; j < this.jugadores.length; j++) {
         System.out.println("Es el turno de " + this.jugadores[j] + ".");
         jugadores[j].inicioTurno();
-        System.out.println("Fin del turno " + j+1 + ".");
+        System.out.println("Fin del turno " + j + 1 + ".");
 
       }
-      System.out.println("Fin de la ronda " + i+1 + ".");
+      System.out.println("Fin de la ronda " + i + 1 + ".");
     }
 
   }
 
   public void decideGanador() {
-    ArrayList<Integer> ganador = new ArrayList<Integer>();  // Almacena la posición del jugador que tiene más puntuación
-    int aux = 0;  // Almacena la puntuación máxima
+    ArrayList<Integer> ganador = new ArrayList<Integer>(); // Almacena la posición del jugador que tiene más puntuación
+    int aux = 0; // Almacena la puntuación máxima
 
     // Bucle para leer la puntuación de los jugadores
     for (int i = 0; i < this.jugadores.length; i++) {
 
-      //Si el jugador a leer tiene más puntuación
-      if (this.jugadores[i].puntuacion > aux) {
+      // Si el jugador a leer tiene más puntuación
+      if (this.jugadores[i].getPuntuacion() > aux) {
         ganador.clear();
         ganador.add(i);
-        aux = this.jugadores[i].puntuacion;
+        aux = this.jugadores[i].getPuntuacion();
 
-        //Si el jugador a leer tiene la misma puntuación
-      } else if (this.jugadores[i].puntuacion == aux) {
+        // Si el jugador a leer tiene la misma puntuación
+      } else if (this.jugadores[i].getPuntuacion() == aux) {
         ganador.add(i);
-      } 
+      }
 
     }
 
@@ -117,18 +116,18 @@ public class Partida {
 
       for (int i = 0; i < ganador.size(); i++) {
         // El último ganador de la lista
-        if (i+1 == ganador.size()) {
-          System.out.print( "y " + this.jugadores[ganador.get(i)].nombre + "." );
+        if (i + 1 == ganador.size()) {
+          System.out.print("y " + this.jugadores[ganador.get(i)].getNombre() + ".");
 
           // El resto de ganadores
         } else {
-          System.out.print( this.jugadores[ganador.get(i)].nombre + ", " );
+          System.out.print(this.jugadores[ganador.get(i)].getNombre() + ", ");
         }
 
       }
       // Si solo hay un ganador
     } else {
-      System.out.print("Felicidades " + this.jugadores[ganador.get(0)].nombre + ", ¡Has ganado!");
+      System.out.print("Felicidades " + this.jugadores[ganador.get(0)].getNombre() + ", ¡Has ganado!");
     }
   }
 
