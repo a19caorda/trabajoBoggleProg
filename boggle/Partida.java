@@ -85,7 +85,7 @@ public class Partida {
         System.out.println("Es el turno de " + this.jugadores[j] + ".");
         //Añadida tirada de dado y muestra del resultado
         this.dado.tirarDados();
-        this.dado.toString();
+        System.out.println(this.dado.toString());
         jugadores[j].inicioTurno();
         System.out.println("Fin del turno " + j + 1 + ".");
 
