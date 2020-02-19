@@ -1,7 +1,6 @@
 package boggle;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
@@ -19,7 +18,6 @@ public class Jugador {
 
   private String nombre;
   private int puntuacion = 0;
-  // public Dado dado;
   private final int TURNO = 180;
 
   /**
@@ -62,31 +60,26 @@ public class Jugador {
     System.out.printf("----------------Empieza el turno de %s!----------------\n", this.nombre);
     System.out.printf("Preparate bien!\n");
 
-    // dado.tirarDados();
     System.out.println("Tus dados son...");
-    // System.out.println(dado);
 
     final ArrayList<String> palabras = new ArrayList<>();
-
     final AtomicBoolean isGettingWords = new AtomicBoolean(true);
 
     Thread wordsThread = new Thread(new Runnable() {
 
       @Override
       public void run() {
-        Scanner scan = new Scanner(System.in);
         while (isGettingWords.get()) {
           System.out.printf("Palabra #%d: ", palabras.size() + 1);
-          String nuevaPalabra = scan.nextLine();
+          String nuevaPalabra = Teclado.getTeclado().readString();
           palabras.add(nuevaPalabra);
         }
-        scan.close();
       }
     });
 
     try {
       wordsThread.start();
-      Thread.sleep(3 * 1000);
+      Thread.sleep(1000 * TURNO);
       Robot r = new Robot();
       r.keyPress(KeyEvent.VK_ENTER);
       r.keyRelease(KeyEvent.VK_ENTER);
