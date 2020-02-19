@@ -21,27 +21,29 @@ import javax.swing.JOptionPane;
  *                        puntuación más alta.
  * 
  * @author David Fontalba
- * @version 1.0.
+ * @version 1.1.
  *
  */
 public class Partida {
   // Atributos de la clase, el número de partidas creadas.
-  public static int maxRondas = 5;
+  private static int MAXRONDAS = 5;
   private static int partidasCreadas = 0;
 
   // Atributos de la partida.
+  public Dado dado;
   private Jugador jugadores[];
   private int numRondas;
 
   public Partida(int numJugadores, int numRondas) {
-
+    
+    dado = new Dado();
     // se almacena numRondas.
-    assert maxRondas >= numRondas && numRondas > 0;
-    if (maxRondas >= numRondas && numRondas > 0) { // El número de rondas tiene que ser positivo y menor al máximo.
+    assert MAXRONDAS >= numRondas && numRondas > 0;
+    if (MAXRONDAS >= numRondas && numRondas > 0) { // El número de rondas tiene que ser positivo y menor al máximo.
       this.numRondas = numRondas;
 
-    } else if (numRondas > maxRondas) { // Si el número de rondas es mayor al máximo, aplica el máximo.
-      this.numRondas = maxRondas;
+    } else if (numRondas > MAXRONDAS) { // Si el número de rondas es mayor al máximo, aplica el máximo.
+      this.numRondas = MAXRONDAS;
 
     } else { // numRondas es menor que 0, muestra un mensaje de error.
       JOptionPane.showMessageDialog(null, "ERROR: El número de rondas tiene que ser mayor que 0.");
@@ -81,6 +83,9 @@ public class Partida {
       // Bucle para los turnos
       for (int j = 0; j < this.jugadores.length; j++) {
         System.out.println("Es el turno de " + this.jugadores[j] + ".");
+        //Añadida tirada de dado y muestra del resultado
+        this.dado.tirarDados();
+        this.dado.toString();
         jugadores[j].inicioTurno();
         System.out.println("Fin del turno " + j + 1 + ".");
 
