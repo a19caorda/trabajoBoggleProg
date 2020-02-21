@@ -30,13 +30,13 @@ public class Partida {
   private static int partidasCreadas = 0;
 
   // Atributos de la partida.
-  public Dado dado;
+  public Cubilete cubilete;
   private Jugador jugadores[];
   private int numRondas;
 
   public Partida(int numJugadores, int numRondas) {
     
-    dado = new Dado();
+    cubilete = new Cubilete();
     // se almacena numRondas.
     assert MAXRONDAS >= numRondas && numRondas > 0;
     if (MAXRONDAS >= numRondas && numRondas > 0) { // El número de rondas tiene que ser positivo y menor al máximo.
@@ -84,8 +84,8 @@ public class Partida {
       for (int j = 0; j < this.jugadores.length; j++) {
         System.out.println("Es el turno de " + this.jugadores[j] + ".");
         //Añadida tirada de dado y muestra del resultado
-        this.dado.tirarDados();
-        System.out.println(this.dado.toString());
+        this.cubilete.tirarDados();
+        System.out.println(this.cubilete.toString());
         jugadores[j].inicioTurno();
         System.out.println("Fin del turno " + j + 1 + ".");
 
