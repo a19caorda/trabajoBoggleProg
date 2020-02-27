@@ -1,24 +1,30 @@
 package boggle;
 
-import java.util.Scanner;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.Base64;
+
+import jdk.nashorn.internal.objects.Global;
+import jdk.nashorn.internal.parser.JSONParser;
 
 import javax.swing.JOptionPane;
+
 
 /**
  * Clase Partida.
  * 
- * Atributos:
- *  -maxRondas        <-- Almacena el número máximo de rondas que puede tener una partida.
- *  -partidasCreadas  <-- Almacena un número entero que representa las veces que se han inicializado 
- *                        partidas.
- *  -jugadores[]      <-- Array de objetos de tipo Jugador.
- *  -numRondas        <-- Número entero.
+ * Atributos: -maxRondas <-- Almacena el número máximo de rondas que puede tener
+ * una partida. -partidasCreadas <-- Almacena un número entero que representa
+ * las veces que se han inicializado partidas. -jugadores[] <-- Array de objetos
+ * de tipo Jugador. -numRondas <-- Número entero.
  * 
- * Métodos:
- *  -iniciarPartida   <-- Se encarga de inicializar la partida y gestionar los turnos de los jugadores.
- *  -decideGanador    <-- Lee la puntuación de los jugadores de la partida y devuelve el que tenga la 
- *                        puntuación más alta.
+ * Métodos: -iniciarPartida <-- Se encarga de inicializar la partida y gestionar
+ * los turnos de los jugadores. -decideGanador <-- Lee la puntuación de los
+ * jugadores de la partida y devuelve el que tenga la puntuación más alta.
  * 
  * @author David Fontalba
  * @version 1.1.
@@ -35,7 +41,8 @@ public class Partida {
   private int numRondas;
 
   public Partida(int numJugadores, int numRondas) {
-    
+
+    partidasCreadas++;
     cubilete = new Cubilete();
     // se almacena numRondas.
     assert MAXRONDAS >= numRondas && numRondas > 0;
@@ -47,33 +54,32 @@ public class Partida {
 
     } else { // numRondas es menor que 0, muestra un mensaje de error.
       JOptionPane.showMessageDialog(null, "ERROR: El número de rondas tiene que ser mayor que 0.");
+      System.exit(1);
     }
-
+    
     // se almacenan jugadores
     assert numJugadores > 0; // El número de jugadores tiene que ser positivo.
     if (numJugadores > 0) {
-      Scanner s = new Scanner(System.in); // Scanner para leer los nombres de los jugadores.
-
+      
       String aux; // Auxiliar para almacenar los nombres de los jugadores.
-
+      
       this.jugadores = new Jugador[numJugadores]; // Defino el tamaño del array.
-
+      
       // Pido nombres de tantos jugadores como número de jugadores halla.
       for (int i = 0; i < numJugadores; i++) {
         System.out.print("Introduce el nombre del jugador " + (i + 1) + ": ");
-        aux = s.nextLine();
-
+        aux = Teclado.getTeclado().readString();
+        
         this.jugadores[i] = new Jugador(aux);
         System.out.println(); // Salto de línea.
       }
-
-      s.close();
-
+      
     } else { // numJugadores es menor que 0, muestra un mensaje de error.
       JOptionPane.showMessageDialog(null, "ERROR: El número de jugadores tiene que ser mayor que 0.");
+      System.exit(1);
     }
   }
-
+  
   public void iniciarPartida() {
 
     // Bucle para las rondas
@@ -83,11 +89,14 @@ public class Partida {
       // Bucle para los turnos
       for (int j = 0; j < this.jugadores.length; j++) {
         System.out.println("Es el turno de " + this.jugadores[j] + ".");
-        //Añadida tirada de dado y muestra del resultado
+        // Añadida tirada de dado y muestra del resultado
         this.cubilete.tirarDados();
         System.out.println(this.cubilete.toString());
-        jugadores[j].inicioTurno();
-        System.out.println("Fin del turno " + j + 1 + ".");
+        Set<String> palabras = jugadores[j].inicioTurno();
+        System.out.println("\nFin del turno " + j + 1 + ".");
+
+        ArrayList<String> palabrasProcesadas = comprueba(palabras);
+        jugadores[j].setPuntuacion(sumaPuntos(palabrasProcesadas));
 
       }
       System.out.println("Fin de la ronda " + i + 1 + ".");
@@ -134,6 +143,103 @@ public class Partida {
     } else {
       System.out.print("Felicidades " + this.jugadores[ganador.get(0)].getNombre() + ", ¡Has ganado!");
     }
+  }
+
+  /**
+   * comprueba se encarga de comprobar que las palabras sean correctas y filtra
+   * las incorrectas.
+   * 
+   * @param aFiltrar La lista de palabras no filtradas
+   * @return La lista de palabras filtrada
+   */
+  private ArrayList<String> comprueba(Set<String> aFiltrar) {
+
+    ArrayList<String> palabrasFiltradas = new ArrayList<>();
+
+    for (String palabraNoFiltrada : aFiltrar) {
+      
+      if (palabraNoFiltrada.length() < 3 && palabraNoFiltrada.length() > 23) {
+        continue;
+      }
+      
+      palabraNoFiltrada = comprobarMatrizBienFormada(palabraNoFiltrada);
+      palabraNoFiltrada = comprobarExistenciaPalabra(palabraNoFiltrada);
+      
+      if (palabraNoFiltrada.isEmpty()) {
+        continue;
+      }
+
+      palabrasFiltradas.add(palabraNoFiltrada);
+
+    }
+
+    return palabrasFiltradas;
+  }
+
+  /**
+   * 
+   * sumaPuntos se encarga de sumar los puntos de las palabras
+   * 
+   * @param palabras La lista de palabras que ya ha sido filtrada
+   * @return La suma de lo que puntua cada palabra
+   */
+  private int sumaPuntos(ArrayList<String> palabras) {
+
+    int resultadoFinal = 0;
+
+    for (String palabra : palabras) {
+      switch (palabra.length()) {
+        case 3:
+        case 4:
+          resultadoFinal += 1;
+          break;
+        case 5:
+          resultadoFinal += 2;
+          break;
+        case 6:
+          resultadoFinal += 3;
+          break;
+        case 7:
+          resultadoFinal += 5;
+          break;
+        default:
+          resultadoFinal += 11;
+          break;
+      }
+    }
+
+    return resultadoFinal;
+  }
+
+  private String comprobarExistenciaPalabra(String palabraAFiltrar) {
+
+    try {
+
+      URL url = new URL(
+          String.format("https://od-api.oxforddictionaries.com:443/api/v2/entries/es/%s?lexicalCategory=noun,verb",
+              palabraAFiltrar.toLowerCase()));
+      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+      conn.setRequestMethod("GET");
+      conn.setRequestProperty("app_id", "46a14e95");
+      conn.setRequestProperty("app_key", "384d633d7a131cd0ab86fb6322665e15");
+      conn.connect();
+
+      if (conn.getResponseCode() != 200) {
+        return "";
+      }
+
+    } catch (MalformedURLException e) {
+      return "";
+    } catch (IOException e) {
+      return "";
+    }
+
+    return palabraAFiltrar;
+
+  }
+
+  private String comprobarMatrizBienFormada(String palabraAFiltrar) {
+    return "";
   }
 
 }
