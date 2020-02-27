@@ -1,6 +1,6 @@
 package boggle;
 
-public class Dado {
+public class Cubilete {
 
   private final char d1[] = new char[] { 'Q', 'B', 'Z', 'J', 'X', 'L' };
   private final char d2[] = new char[] { 'T', 'O', 'U', 'O', 'T', 'O' };
@@ -32,14 +32,30 @@ public class Dado {
   private final char d24[] = new char[] { 'I', 'T', 'A', 'T', 'I', 'E' };
   private final char d25[] = new char[] { 'E', 'T', 'I', 'L', 'A', 'C' };
 
+  private final char dados[][] = new char[][] {d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19,d20,d21,d22,d23,d24,d25};  
+
   private char caras[][] = new char[5][5];
 
-  public Dado() {}
-
-  public void tirarDados() {
-
+  public char[][] tirarDados() {
+    int dado = 0;
+    for (int fila=0;fila<5;fila++) {
+      for (int columna=0;columna<5;columna++) {
+        caras[fila][columna] = (char) (dados[dado][(int) (Math.random()*5+1)]);
+        dado++;
+      }
+    }
+    return caras;
   }
+
   public String toString() {
-    return null;
+    String cadenaFinal = "\n";
+    for (int fila=0;fila<5;fila++) {
+      for (int columna=0;columna<5;columna++) {
+        cadenaFinal += caras[fila][columna]+" ";
+      }
+      cadenaFinal += "\n";
+    }
+    return cadenaFinal;
   }
+
 }
