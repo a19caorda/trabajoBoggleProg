@@ -1,4 +1,4 @@
-package boggle;
+package boggle.juego;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -6,12 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.Base64;
-
-import jdk.nashorn.internal.objects.Global;
-import jdk.nashorn.internal.parser.JSONParser;
-
 import javax.swing.JOptionPane;
+import boggle.utiles.Teclado;
 
 
 /**
@@ -46,6 +42,34 @@ public class Partida {
     cubilete = new Cubilete();
     // se almacena numRondas.
     assert MAXRONDAS >= numRondas && numRondas > 0;
+    compruebaRondas(numRondas);
+    
+    // se almacenan jugadores
+    assert numJugadores > 0; // El número de jugadores tiene que ser positivo.
+    pideJugadores(numJugadores);
+  }
+
+  private void pideJugadores(int numJugadores) {
+    if (numJugadores > 0) {
+      
+      String aux; // Auxiliar para almacenar los nombres de los jugadores.
+      
+      this.jugadores = new Jugador[numJugadores]; // Defino el tamaño del array.
+      
+      // Pido nombres de tantos jugadores como número de jugadores halla.
+      for (int i = 0; i < numJugadores; i++) {
+        aux = Teclado.readString("Introduce el nombre del jugador " + (i + 1) + ": ");
+        
+        this.jugadores[i] = new Jugador(aux);
+      }
+      
+    } else { // numJugadores es menor que 0, muestra un mensaje de error.
+      JOptionPane.showMessageDialog(null, "ERROR: El número de jugadores tiene que ser mayor que 0.");
+      System.exit(1);
+    }
+  }
+
+  private void compruebaRondas(int numRondas) {
     if (MAXRONDAS >= numRondas && numRondas > 0) { // El número de rondas tiene que ser positivo y menor al máximo.
       this.numRondas = numRondas;
 
@@ -56,35 +80,13 @@ public class Partida {
       JOptionPane.showMessageDialog(null, "ERROR: El número de rondas tiene que ser mayor que 0.");
       System.exit(1);
     }
-    
-    // se almacenan jugadores
-    assert numJugadores > 0; // El número de jugadores tiene que ser positivo.
-    if (numJugadores > 0) {
-      
-      String aux; // Auxiliar para almacenar los nombres de los jugadores.
-      
-      this.jugadores = new Jugador[numJugadores]; // Defino el tamaño del array.
-      
-      // Pido nombres de tantos jugadores como número de jugadores halla.
-      for (int i = 0; i < numJugadores; i++) {
-        System.out.print("Introduce el nombre del jugador " + (i + 1) + ": ");
-        aux = Teclado.getTeclado().readString();
-        
-        this.jugadores[i] = new Jugador(aux);
-        System.out.println(); // Salto de línea.
-      }
-      
-    } else { // numJugadores es menor que 0, muestra un mensaje de error.
-      JOptionPane.showMessageDialog(null, "ERROR: El número de jugadores tiene que ser mayor que 0.");
-      System.exit(1);
-    }
   }
   
   public void iniciarPartida() {
 
     // Bucle para las rondas
     for (int i = 0; i < this.numRondas; i++) {
-      System.out.println("Prepárate, la ronda " + i + 1 + " va a comenzar.");
+      System.out.println("Prepárate, la ronda " + (i+1) + " va a comenzar.");
 
       // Bucle para los turnos
       for (int j = 0; j < this.jugadores.length; j++) {
@@ -92,19 +94,25 @@ public class Partida {
         // Añadida tirada de dado y muestra del resultado
         this.cubilete.tirarDados();
         System.out.println(this.cubilete.toString());
+        //Quitamos las repeticiones
         Set<String> palabras = jugadores[j].inicioTurno();
-        System.out.println("\nFin del turno " + j + 1 + ".");
-
-        ArrayList<String> palabrasProcesadas = comprueba(palabras);
-        jugadores[j].setPuntuacion(sumaPuntos(palabrasProcesadas));
+        System.out.println("\nFin del turno " + (j+1) + ".");
+        
+        
+        ArrayList<String> palabrasProcesadas = comprueba(palabras, this.cubilete);
+        
+        jugadores[j].setPuntuacion( sumaPuntos(palabrasProcesadas) );
 
       }
-      System.out.println("Fin de la ronda " + i + 1 + ".");
+      System.out.println("Fin de la ronda " + (i+1) + ".");
+      
     }
+    
+    decideGanador();
 
   }
 
-  public void decideGanador() {
+  private void decideGanador() {
     ArrayList<Integer> ganador = new ArrayList<Integer>(); // Almacena la posición del jugador que tiene más puntuación
     int aux = 0; // Almacena la puntuación máxima
 
@@ -121,7 +129,7 @@ public class Partida {
       } else if (this.jugadores[i].getPuntuacion() == aux) {
         ganador.add(i);
       }
-
+      
     }
 
     // Si hay más de un ganador
@@ -131,7 +139,7 @@ public class Partida {
       for (int i = 0; i < ganador.size(); i++) {
         // El último ganador de la lista
         if (i + 1 == ganador.size()) {
-          System.out.print("y " + this.jugadores[ganador.get(i)].getNombre() + ".");
+          System.out.println("y " + this.jugadores[ganador.get(i)].getNombre() + ".");
 
           // El resto de ganadores
         } else {
@@ -141,7 +149,13 @@ public class Partida {
       }
       // Si solo hay un ganador
     } else {
-      System.out.print("Felicidades " + this.jugadores[ganador.get(0)].getNombre() + ", ¡Has ganado!");
+      System.out.println("Felicidades " + this.jugadores[ganador.get(0)].getNombre() + ", ¡Has ganado!");
+    
+    }
+    
+    System.out.println("Recuento de puntuaciones: ");  
+    for (Jugador jugador : this.jugadores) {
+      System.out.println(jugador.getNombre() + ": "+jugador.getPuntuacion());  
     }
   }
 
@@ -152,7 +166,7 @@ public class Partida {
    * @param aFiltrar La lista de palabras no filtradas
    * @return La lista de palabras filtrada
    */
-  private ArrayList<String> comprueba(Set<String> aFiltrar) {
+  private ArrayList<String> comprueba(Set<String> aFiltrar, Cubilete cubilete) {
 
     ArrayList<String> palabrasFiltradas = new ArrayList<>();
 
@@ -162,8 +176,9 @@ public class Partida {
         continue;
       }
       
-      palabraNoFiltrada = comprobarMatrizBienFormada(palabraNoFiltrada);
       palabraNoFiltrada = comprobarExistenciaPalabra(palabraNoFiltrada);
+      
+      palabraNoFiltrada =  comprobarMatrizBienFormada(palabraNoFiltrada, cubilete);
       
       if (palabraNoFiltrada.isEmpty()) {
         continue;
@@ -189,7 +204,14 @@ public class Partida {
 
     for (String palabra : palabras) {
       switch (palabra.length()) {
+        case 0:
+          break;
+        case 1:
+          break;
+        case 2:
+          break;
         case 3:
+          break;
         case 4:
           resultadoFinal += 1;
           break;
@@ -238,8 +260,55 @@ public class Partida {
 
   }
 
-  private String comprobarMatrizBienFormada(String palabraAFiltrar) {
-    return "";
+  private String comprobarMatrizBienFormada(String palabra, Cubilete cubilete) {
+    int letra=1;
+    String validador = "";
+    
+    for (int x=0; x<cubilete.caras.length; x++) {
+      for (int y=0; y<cubilete.caras[x].length; y++) {
+        if (compruebaLetra(cubilete, palabra, letra, x, y)) {
+          validador += palabra.charAt(letra-1);
+        }
+        letra++;  
+  
+        if (letra == palabra.length()) {
+          break;
+        }
+      }
+      if (letra == palabra.length()) {
+        break;
+      } 
+    } 
+    
+    if (validador == palabra) {
+      return palabra;
+    } else {
+      return "";
+    }
   }
 
+  
+  private boolean compruebaLetra(Cubilete cubilete, String palabra, int letra, int x, int y) {
+    try {
+      char letraAComprobar = palabra.charAt(letra);
+            
+      if (letraAComprobar == cubilete.caras[x-1][y-1] || letraAComprobar == cubilete.caras[x-1][y] || letraAComprobar == cubilete.caras[x-1][y+1]
+          || letraAComprobar == cubilete.caras[x][y-1]  || letraAComprobar == cubilete.caras[x][y+1]
+          || letraAComprobar == cubilete.caras[x+1][y-1] || letraAComprobar == cubilete.caras[x+1][y] || letraAComprobar == cubilete.caras[x+1][y+11]) {
+        return true;
+      } else {
+        return false;
+      }
+      
+      } catch (StringIndexOutOfBoundsException e) {
+      } catch (IndexOutOfBoundsException e) {
+      }  
+    return false;
+  }
+
+  
+  // Getters
+  public static int getPartidasCreadas() {
+    return partidasCreadas;
+  }
 }
