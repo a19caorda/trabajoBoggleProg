@@ -1,4 +1,4 @@
-package boggle;
+package boggle.utiles;
 
 import java.util.Scanner;
 
@@ -9,7 +9,6 @@ import java.util.Scanner;
 public class Teclado {
 
   private static final Scanner SCAN = new Scanner(System.in);
-  private static final Teclado teclado = new Teclado();
 
   private Teclado() {
   }
@@ -18,18 +17,24 @@ public class Teclado {
    * Método estático para obtener la instancia
    * 
    * @return Instancia de clase Teclado
-   */
+   
   public static Teclado getTeclado() {
     return teclado;
   }
+  */
 
   /**
    * Método para obtener una cadena que introduzca el usuario
    * 
    * @return La cadena puesta por el usuario
    */
-  public String readString() {
+  public static String readString() {
     return SCAN.nextLine();
+  }
+  
+  public static String readString(String mensaje) {
+    System.out.print(mensaje);
+    return readString();
   }
 
   /**
@@ -37,14 +42,19 @@ public class Teclado {
    * 
    * @return El número puesta por el usuario
    */
-  public int readInt() {
+  public static int readInt() {
     return SCAN.nextInt();
+  }
+  
+  public static int readInt(String mensaje) {
+    System.out.print(mensaje);
+    return readInt();
   }
 
   /**
    * Método para cerrar el Scanner, debe llamarse cuando finaliza el programa
    */
-  public void close() {
+  public static void close() {
     SCAN.close();
   }
 

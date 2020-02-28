@@ -1,16 +1,12 @@
-package boggle;
+package boggle.juego;
 
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
+import boggle.utiles.Teclado;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.awt.AWTException;
 
 /**
@@ -18,14 +14,14 @@ import java.awt.AWTException;
  * iniciar el turno
  * 
  * @author David Castilla Ortiz
- * @version 1.0.0
+ * @version 1.1.0
  * 
  */
 public class Jugador {
 
   private String nombre;
   private int puntuacion = 0;
-  private final int TURNO = 180;
+  private final int TURNO = 20;//180;
 
   /**
    * Constructor para crear un jugador
@@ -67,16 +63,16 @@ public class Jugador {
     final ArrayList<String> palabras = new ArrayList<>();
     final AtomicBoolean isGettingWords = new AtomicBoolean(true);
 
-    Thread wordsThread = new Thread(new Runnable() {
+    Thread wordsThread = new Thread( new Runnable() {
 
       @Override
       public void run() {
         while (isGettingWords.get()) {
-          System.out.printf("Palabra #%d: ", palabras.size() + 1);
-          String nuevaPalabra = Teclado.getTeclado().readString();
+          String nuevaPalabra = Teclado.readString("Palabra "+ (palabras.size() + 1) +": ");
           palabras.add(nuevaPalabra);
         }
       }
+      
     });
 
     try {
