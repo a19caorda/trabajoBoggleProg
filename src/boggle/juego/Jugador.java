@@ -1,12 +1,15 @@
 package boggle.juego;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import boggle.utiles.Teclado;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.awt.AWTException;
 
 /**
@@ -21,7 +24,7 @@ public class Jugador {
 
   private String nombre;
   private int puntuacion = 0;
-  private final int TURNO = 20;//180;
+  private final int TURNO = 10;// 180;
 
   /**
    * Constructor para crear un jugador
@@ -46,6 +49,10 @@ public class Jugador {
     this.puntuacion = puntuacion;
   }
 
+  public void sumaPuntuacion(int puntuacion) {
+    this.puntuacion += puntuacion;
+  }
+
   /**
    * @return the puntuacion
    */
@@ -55,24 +62,29 @@ public class Jugador {
 
   /**
    * inicioTurno se encarga de iniciar el turno y seguir pidiendo palabras,
-   * despues filtrandolas y, ya por ultimo, sumando los puntos que tiene de las
-   * palabras intrucidas.
+   * después filtrandolas y, ya por ultimo, sumando los puntos que tiene de las
+   * palabras introducidas.
    */
   public Set<String> inicioTurno() {
 
     final ArrayList<String> palabras = new ArrayList<>();
     final AtomicBoolean isGettingWords = new AtomicBoolean(true);
 
-    Thread wordsThread = new Thread( new Runnable() {
+    Thread wordsThread = new Thread(new Runnable() {
 
       @Override
       public void run() {
+
         while (isGettingWords.get()) {
-          String nuevaPalabra = Teclado.readString("Palabra "+ (palabras.size() + 1) +": ");
-          palabras.add(nuevaPalabra);
+          System.out.printf("Palabra %d: ", palabras.size() + 1);
+          try {
+            String nuevaPalabra = Teclado.readString();
+            palabras.add(nuevaPalabra);
+          } catch (NoSuchElementException e) {
+          }
         }
       }
-      
+
     });
 
     try {
@@ -83,7 +95,8 @@ public class Jugador {
       r.keyRelease(KeyEvent.VK_ENTER);
       isGettingWords.set(false);
 
-      wordsThread.interrupt();
+      // wordsThread.interrupt();
+
     } catch (InterruptedException e) {
       return new HashSet<String>();
     } catch (AWTException a) {
@@ -91,7 +104,7 @@ public class Jugador {
     }
 
     return new HashSet<String>(palabras);
-    
+
   }
 
   @Override

@@ -21,6 +21,7 @@ class Main {
     } else {
       System.out.println("Has jugado "+ Partida.getPartidasCreadas()+" partidas." );
     }
+    
   }
 
 }
