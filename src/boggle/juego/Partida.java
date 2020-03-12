@@ -48,6 +48,10 @@ public class Partida {
     pideJugadores(numJugadores);
   }
 
+  public Partida(Jugador... jugadores) {
+    this.jugadores = jugadores;
+  }
+
   private void pideJugadores(int numJugadores) {
     if (numJugadores > 0) {
 

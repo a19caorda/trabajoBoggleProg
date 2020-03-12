@@ -24,7 +24,7 @@ public class Jugador {
 
   private String nombre;
   private int puntuacion = 0;
-  private final int TURNO = 180;// 180;
+  private final int TURNO = 30;// 180;
 
   /**
    * Constructor para crear un jugador
