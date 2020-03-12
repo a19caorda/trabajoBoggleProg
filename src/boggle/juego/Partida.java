@@ -208,7 +208,7 @@ public class Partida {
    * sumaPuntos se encarga de sumar los puntos de las palabras
    * 
    * @param palabras La lista de palabras que ya ha sido filtrada
-   * @return La suma de lo que puntua cada palabra
+   * @return La suma de lo que puntúa cada palabra
    */
   private int sumaPuntos(ArrayList<String> palabras) {
 

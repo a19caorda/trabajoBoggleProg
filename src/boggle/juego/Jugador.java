@@ -80,8 +80,9 @@ public class Jugador {
           try {
             String nuevaPalabra = Teclado.readString();
             palabras.add(nuevaPalabra);
-            
+
           } catch (NoSuchElementException e) {
+          } catch (IndexOutOfBoundsException e) {
           }
         }
       }
