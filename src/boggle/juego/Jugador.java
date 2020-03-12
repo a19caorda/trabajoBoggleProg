@@ -24,7 +24,7 @@ public class Jugador {
 
   private String nombre;
   private int puntuacion = 0;
-  private final int TURNO = 10;// 180;
+  private final int TURNO = 180;// 180;
 
   /**
    * Constructor para crear un jugador
@@ -80,6 +80,7 @@ public class Jugador {
           try {
             String nuevaPalabra = Teclado.readString();
             palabras.add(nuevaPalabra);
+            
           } catch (NoSuchElementException e) {
           }
         }

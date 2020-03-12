@@ -359,52 +359,6 @@ public class Partida {
 
   }
 
-  private String comprobarMatrizBienFormada(String palabra, Cubilete cubilete) {
-    int letra = 1;
-    String validador = "";
-
-    for (int x = 0; x < cubilete.caras.length; x++) {
-      for (int y = 0; y < cubilete.caras[x].length; y++) {
-        if (compruebaLetra(cubilete, palabra, letra, x, y)) {
-          validador += palabra.charAt(letra - 1);
-        }
-        letra++;
-
-        if (letra == palabra.length()) {
-          break;
-        }
-      }
-      if (letra == palabra.length()) {
-        break;
-      }
-    }
-
-    if (validador == palabra) {
-      return palabra;
-    } else {
-      return "";
-    }
-  }
-
-  private boolean compruebaLetra(Cubilete cubilete, String palabra, int letra, int x, int y) {
-    try {
-      char letraAComprobar = palabra.charAt(letra);
-
-      if (letraAComprobar == cubilete.caras[x - 1][y - 1] || letraAComprobar == cubilete.caras[x - 1][y]
-          || letraAComprobar == cubilete.caras[x - 1][y + 1] || letraAComprobar == cubilete.caras[x][y - 1]
-          || letraAComprobar == cubilete.caras[x][y + 1] || letraAComprobar == cubilete.caras[x + 1][y - 1]
-          || letraAComprobar == cubilete.caras[x + 1][y] || letraAComprobar == cubilete.caras[x + 1][y + 11]) {
-        return true;
-      } else {
-        return false;
-      }
-
-    } catch (StringIndexOutOfBoundsException e) {
-    } catch (IndexOutOfBoundsException e) {
-    }
-    return false;
-  }
-
   // Getters
   public static int getPartidasCreadas() {
     return partidasCreadas;
