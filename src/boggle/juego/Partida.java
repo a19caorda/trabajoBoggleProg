@@ -48,7 +48,8 @@ public class Partida {
     pideJugadores(numJugadores);
   }
 
-  public Partida(Jugador... jugadores) {
+  public Partida(int numRondas, Jugador... jugadores) {
+    this.numRondas = numRondas >= MAXRONDAS ? MAXRONDAS : numRondas;
     this.jugadores = jugadores;
   }
 
