@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 import boggle.utiles.Teclado;
 
-
 /**
  * Clase Partida.
  * 
@@ -43,26 +42,31 @@ public class Partida {
     // se almacena numRondas.
     assert MAXRONDAS >= numRondas && numRondas > 0;
     compruebaRondas(numRondas);
-    
+
     // se almacenan jugadores
     assert numJugadores > 0; // El número de jugadores tiene que ser positivo.
     pideJugadores(numJugadores);
   }
 
+  public Partida(int numRondas, Jugador... jugadores) {
+    this.numRondas = numRondas >= MAXRONDAS ? MAXRONDAS : numRondas;
+    this.jugadores = jugadores;
+  }
+
   private void pideJugadores(int numJugadores) {
     if (numJugadores > 0) {
-      
+
       String aux; // Auxiliar para almacenar los nombres de los jugadores.
-      
+
       this.jugadores = new Jugador[numJugadores]; // Defino el tamaño del array.
-      
+
       // Pido nombres de tantos jugadores como número de jugadores halla.
       for (int i = 0; i < numJugadores; i++) {
         aux = Teclado.readString("Introduce el nombre del jugador " + (i + 1) + ": ");
-        
+
         this.jugadores[i] = new Jugador(aux);
       }
-      
+
     } else { // numJugadores es menor que 0, muestra un mensaje de error.
       JOptionPane.showMessageDialog(null, "ERROR: El número de jugadores tiene que ser mayor que 0.");
       System.exit(1);
@@ -81,12 +85,12 @@ public class Partida {
       System.exit(1);
     }
   }
-  
+
   public void iniciarPartida() {
 
     // Bucle para las rondas
     for (int i = 0; i < this.numRondas; i++) {
-      System.out.println("Prepárate, la ronda " + (i+1) + " va a comenzar.");
+      System.out.println("Prepárate, la ronda " + (i + 1) + " va a comenzar.");
 
       // Bucle para los turnos
       for (int j = 0; j < this.jugadores.length; j++) {
@@ -94,26 +98,36 @@ public class Partida {
         // Añadida tirada de dado y muestra del resultado
         this.cubilete.tirarDados();
         System.out.println(this.cubilete.toString());
-        //Quitamos las repeticiones
+        // Quitamos las repeticiones
         Set<String> palabras = jugadores[j].inicioTurno();
-        System.out.println("\nFin del turno " + (j+1) + ".");
-        
-        
-        ArrayList<String> palabrasProcesadas = comprueba(palabras, this.cubilete);
-        
-        jugadores[j].setPuntuacion( sumaPuntos(palabrasProcesadas) );
+        System.out.println("\nFin del turno " + (j + 1) + ".");
+
+        ArrayList<String> palabrasProcesadas = comprueba(palabras);
+
+        System.out.println("Palabras válidas");
+        for (String palabraProcesada : palabrasProcesadas) {
+          System.out.println(" - " + palabraProcesada);
+        }
+
+        jugadores[j].sumaPuntuacion(sumaPuntos(palabrasProcesadas));
+
+        try {
+          Thread.sleep(1000);
+        } catch (InterruptedException e) {
+        }
 
       }
-      System.out.println("Fin de la ronda " + (i+1) + ".");
-      
+      System.out.println("Fin de la ronda " + (i + 1) + ".");
+
     }
-    
+
     decideGanador();
 
   }
 
   private void decideGanador() {
-    ArrayList<Integer> ganador = new ArrayList<Integer>(); // Almacena la posición del jugador que tiene más puntuación
+    ArrayList<Integer> ganador = new ArrayList<Integer>(); // Almacena la posición del jugador que tiene más
+    // puntuación
     int aux = 0; // Almacena la puntuación máxima
 
     // Bucle para leer la puntuación de los jugadores
@@ -129,7 +143,7 @@ public class Partida {
       } else if (this.jugadores[i].getPuntuacion() == aux) {
         ganador.add(i);
       }
-      
+
     }
 
     // Si hay más de un ganador
@@ -150,12 +164,12 @@ public class Partida {
       // Si solo hay un ganador
     } else {
       System.out.println("Felicidades " + this.jugadores[ganador.get(0)].getNombre() + ", ¡Has ganado!");
-    
+
     }
-    
-    System.out.println("Recuento de puntuaciones: ");  
+
+    System.out.println("Recuento de puntuaciones: ");
     for (Jugador jugador : this.jugadores) {
-      System.out.println(jugador.getNombre() + ": "+jugador.getPuntuacion());  
+      System.out.println(jugador.getNombre() + ": " + jugador.getPuntuacion());
     }
   }
 
@@ -166,20 +180,23 @@ public class Partida {
    * @param aFiltrar La lista de palabras no filtradas
    * @return La lista de palabras filtrada
    */
-  private ArrayList<String> comprueba(Set<String> aFiltrar, Cubilete cubilete) {
+  private ArrayList<String> comprueba(Set<String> aFiltrar) {
 
     ArrayList<String> palabrasFiltradas = new ArrayList<>();
 
     for (String palabraNoFiltrada : aFiltrar) {
-      
+
       if (palabraNoFiltrada.length() < 3 && palabraNoFiltrada.length() > 23) {
         continue;
       }
-      
+
       palabraNoFiltrada = comprobarExistenciaPalabra(palabraNoFiltrada);
-      
-      palabraNoFiltrada =  comprobarMatrizBienFormada(palabraNoFiltrada, cubilete);
-      
+
+      if (palabraNoFiltrada.isEmpty()) {
+        continue;
+      }
+      palabraNoFiltrada = comprobarMatrizBienFormada(palabraNoFiltrada);
+
       if (palabraNoFiltrada.isEmpty()) {
         continue;
       }
@@ -196,7 +213,7 @@ public class Partida {
    * sumaPuntos se encarga de sumar los puntos de las palabras
    * 
    * @param palabras La lista de palabras que ya ha sido filtrada
-   * @return La suma de lo que puntua cada palabra
+   * @return La suma de lo que puntúa cada palabra
    */
   private int sumaPuntos(ArrayList<String> palabras) {
 
@@ -205,11 +222,8 @@ public class Partida {
     for (String palabra : palabras) {
       switch (palabra.length()) {
         case 0:
-          break;
         case 1:
-          break;
         case 2:
-          break;
         case 3:
           break;
         case 4:
@@ -260,53 +274,96 @@ public class Partida {
 
   }
 
-  private String comprobarMatrizBienFormada(String palabra, Cubilete cubilete) {
-    int letra=1;
+  private String comprobarMatrizBienFormada(String palabra) {
+    char[][] c = cubilete.caras;
+    palabra = palabra.toUpperCase();
     String validador = "";
-    
-    for (int x=0; x<cubilete.caras.length; x++) {
-      for (int y=0; y<cubilete.caras[x].length; y++) {
-        if (compruebaLetra(cubilete, palabra, letra, x, y)) {
-          validador += palabra.charAt(letra-1);
+
+    for (int x = 0; x < 5; x++) {
+      for (int y = 0; y < 5; y++) {
+        int newX = x;
+        int newY = y;
+        for (int letraPos = 0; letraPos < palabra.length(); letraPos++) {
+          if (c[newX][newY] == (palabra.charAt(letraPos))) {
+
+            validador += c[newX][newY];
+            if (validador.equals(palabra)) {
+              return palabra;
+            }
+            try {
+              if (c[newX + 1][newY] == (palabra.charAt(letraPos + 1))) {
+                newX = newX + 1;
+                continue;
+              }
+            } catch (IndexOutOfBoundsException e) {
+            }
+            try {
+              if (c[newX - 1][newY] == (palabra.charAt(letraPos + 1))) {
+                newX = newX - 1;
+              }
+            } catch (IndexOutOfBoundsException e) {
+            }
+            try {
+              if (c[newX][newY + 1] == (palabra.charAt(letraPos + 1))) {
+                newY = newY + 1;
+                continue;
+              }
+            } catch (IndexOutOfBoundsException e) {
+            }
+            try {
+              if (c[newX][newY - 1] == (palabra.charAt(letraPos + 1))) {
+                newY = newY - 1;
+                continue;
+              }
+            } catch (IndexOutOfBoundsException e) {
+            }
+            try {
+              if (c[newX + 1][newY + 1] == (palabra.charAt(letraPos + 1))) {
+                newY = newY + 1;
+                newX = newX + 1;
+                continue;
+              }
+            } catch (IndexOutOfBoundsException e) {
+            }
+            try {
+              if (c[newX + 1][newY - 1] == (palabra.charAt(letraPos + 1))) {
+                newY = newY - 1;
+                newX = newX + 1;
+                continue;
+              }
+            } catch (IndexOutOfBoundsException e) {
+            }
+            try {
+              if (c[newX - 1][newY + 1] == (palabra.charAt(letraPos + 1))) {
+                newY = newY + 1;
+                newX = newX - 1;
+                continue;
+              }
+            } catch (IndexOutOfBoundsException e) {
+            }
+            try {
+              if (c[newX - 1][newY - 1] == (palabra.charAt(letraPos + 1))) {
+                newY = newY - 1;
+                newX = newX - 1;
+                continue;
+              }
+            } catch (IndexOutOfBoundsException e) {
+            }
+          } else {
+            validador = "";
+            break;
+          }
+          letraPos++;
+
         }
-        letra++;  
-  
-        if (letra == palabra.length()) {
-          break;
-        }
+
       }
-      if (letra == palabra.length()) {
-        break;
-      } 
-    } 
-    
-    if (validador == palabra) {
-      return palabra;
-    } else {
-      return "";
     }
+
+    return "";
+
   }
 
-  
-  private boolean compruebaLetra(Cubilete cubilete, String palabra, int letra, int x, int y) {
-    try {
-      char letraAComprobar = palabra.charAt(letra);
-            
-      if (letraAComprobar == cubilete.caras[x-1][y-1] || letraAComprobar == cubilete.caras[x-1][y] || letraAComprobar == cubilete.caras[x-1][y+1]
-          || letraAComprobar == cubilete.caras[x][y-1]  || letraAComprobar == cubilete.caras[x][y+1]
-          || letraAComprobar == cubilete.caras[x+1][y-1] || letraAComprobar == cubilete.caras[x+1][y] || letraAComprobar == cubilete.caras[x+1][y+11]) {
-        return true;
-      } else {
-        return false;
-      }
-      
-      } catch (StringIndexOutOfBoundsException e) {
-      } catch (IndexOutOfBoundsException e) {
-      }  
-    return false;
-  }
-
-  
   // Getters
   public static int getPartidasCreadas() {
     return partidasCreadas;
