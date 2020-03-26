@@ -4,6 +4,7 @@ import random
 
 class Cubilete:
 
+    # Dados
     d1 = [ 'Q', 'B', 'Z', 'J', 'X', 'L' ]
     d2 = [ 'T', 'O', 'U', 'O', 'T', 'O' ]
     d3 = [ 'O', 'V', 'C', 'R', 'G', 'R' ]
@@ -34,11 +35,18 @@ class Cubilete:
     d24 = [ 'I', 'T', 'A', 'T', 'I', 'E' ]
     d25 = [ 'E', 'T', 'I', 'L', 'A', 'C' ]
 
+    # Matriz con todos los dados
     dados = [d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19,d20,d21,d22,d23,d24,d25]
 
+    # Matriz donde se almacenarán las caras de los dados
     caras = [[None] * 5 for i in range(5)]
     
+    # Método para crear el cubilete
     def tirarDados(self):
+        """
+        Crea un array bidimensional con las letras que salgan de haber "tirado" el dado
+        :return: Un array bidimensional con las caras de los dados resultantes de "tirar" los dados
+        """
         dado = 0
         for fila in range(5):
             for columna in range(5):
@@ -48,6 +56,10 @@ class Cubilete:
     
     # Método sobrecargado para poder imprimir el cubilete
     def __str__(self):
+        """
+        Imprime por pantalla el objeto de la manera indicada en el método
+        :return: Una cadena para ver graficamente el cubilete
+        """
         cadenaFinal = "\n"
         for fila in range(5):
             for columna in range(5):
