@@ -3,6 +3,9 @@ import time
 from pynput.keyboard import Key, Controller as KeyboardController
 
 class Jugador:
+    """
+    La clase jugador se encarga de guardar el estado del jugador y de pedir las palabras
+    """
 
     __turno = 10
     __nombre = ""
@@ -20,15 +23,24 @@ class Jugador:
     def puntuacion(self):
         return self.__puntuacion
 
-    def sumarPuntuacion(self, suma):
+    def sumar_puntuacion(self, suma):
         self.__puntuacion += suma
 
     def recoger_palabras(self, palabras: list):
+        """
+        Método que después es usado en otro hilo para recoger palabras
+        """
         while self.__recogiendo:
-            palabras.append( input(f"Palabra {len(palabras) + 1:02}: ") )
+            palabras.append( input(f"Palabra {len(palabras) + 1:02}: ").lower() )
         
 
     def inicioTurno(self):
+        """
+        Con este método se inicia el turno que consiste en:
+            - Creación de otro hilo para recoger las palabras
+            - Filtrado de palabras duplicadas
+            - Return de la lista de palabras
+        """
         palabras = []
         self.__recogiendo = True
         thread = threading.Thread(target=self.recoger_palabras, args=(palabras,))
