@@ -1,7 +1,19 @@
 package boggle.juego;
 
+/**
+ * Esta clase crea un cubilete de dados con las caras que salgan aleatoriamente
+ * Tiene los siguientes métodos:
+ *  tirarDados()
+ *  toString()
+ * @author Antonio García García
+ * @version 1.0
+ */
+
 public class Cubilete {
 
+  /**
+   * Dados
+   */
   private final char d1[] = new char[] { 'Q', 'B', 'Z', 'J', 'X', 'L' };
   private final char d2[] = new char[] { 'T', 'O', 'U', 'O', 'T', 'O' };
   private final char d3[] = new char[] { 'O', 'V', 'C', 'R', 'G', 'R' };
@@ -32,10 +44,20 @@ public class Cubilete {
   private final char d24[] = new char[] { 'I', 'T', 'A', 'T', 'I', 'E' };
   private final char d25[] = new char[] { 'E', 'T', 'I', 'L', 'A', 'C' };
 
+  /**
+   * Matriz con todos los dados
+   */
   private final char dados[][] = new char[][] {d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11,d12,d13,d14,d15,d16,d17,d18,d19,d20,d21,d22,d23,d24,d25};  
 
+  /**
+   * Matriz donde se almacenarán las caras de los dados
+   */
   char caras[][] = new char[5][5];
 
+  /**
+   * Crea un array bidimensional con las letras que salgan de haber "tirado" el dado
+   * @return Un array bidimensional con las caras de los dados resultantes de "tirar" los dados
+   */
   public char[][] tirarDados() {
     int dado = 0;
     for (int fila=0;fila<5;fila++) {
@@ -47,6 +69,10 @@ public class Cubilete {
     return caras;
   }
 
+  /**
+   * Imprime por pantalla el objeto de la manera indicada en el método
+   * @return Una cadena para ver graficamente el cubilete
+   */
   public String toString() {
     String cadenaFinal = "\n";
     for (int fila=0;fila<5;fila++) {

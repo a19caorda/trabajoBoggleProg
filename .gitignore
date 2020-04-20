@@ -2,3 +2,4 @@
 *.class
 /prueba
 /bin/
+__pycache__
