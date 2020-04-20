@@ -35,57 +35,18 @@ public class Partida {
   private Jugador jugadores[];
   private int numRondas;
 
-  public Partida(int numJugadores, int numRondas) {
-
-    partidasCreadas++;
-    cubilete = new Cubilete();
-    // se almacena numRondas.
-    assert MAXRONDAS >= numRondas && numRondas > 0;
-    compruebaRondas(numRondas);
-
-    // se almacenan jugadores
-    assert numJugadores > 0; // El número de jugadores tiene que ser positivo.
-    pideJugadores(numJugadores);
-  }
-
+  /**
+   * @param numRondas El número de rondas que se jugará
+   * @param jugadores Los jugadores que van a participar
+   */
   public Partida(int numRondas, Jugador... jugadores) {
-    this.numRondas = numRondas >= MAXRONDAS ? MAXRONDAS : numRondas;
+    this.numRondas = Math.min(MAXRONDAS, numRondas);
     this.jugadores = jugadores;
   }
 
-  private void pideJugadores(int numJugadores) {
-    if (numJugadores > 0) {
-
-      String aux; // Auxiliar para almacenar los nombres de los jugadores.
-
-      this.jugadores = new Jugador[numJugadores]; // Defino el tamaño del array.
-
-      // Pido nombres de tantos jugadores como número de jugadores halla.
-      for (int i = 0; i < numJugadores; i++) {
-        aux = Teclado.readString("Introduce el nombre del jugador " + (i + 1) + ": ");
-
-        this.jugadores[i] = new Jugador(aux);
-      }
-
-    } else { // numJugadores es menor que 0, muestra un mensaje de error.
-      JOptionPane.showMessageDialog(null, "ERROR: El número de jugadores tiene que ser mayor que 0.");
-      System.exit(1);
-    }
-  }
-
-  private void compruebaRondas(int numRondas) {
-    if (MAXRONDAS >= numRondas && numRondas > 0) { // El número de rondas tiene que ser positivo y menor al máximo.
-      this.numRondas = numRondas;
-
-    } else if (numRondas > MAXRONDAS) { // Si el número de rondas es mayor al máximo, aplica el máximo.
-      this.numRondas = MAXRONDAS;
-
-    } else { // numRondas es menor que 0, muestra un mensaje de error.
-      JOptionPane.showMessageDialog(null, "ERROR: El número de rondas tiene que ser mayor que 0.");
-      System.exit(1);
-    }
-  }
-
+  /**
+   * iniciarPartida se encarga del desarrollo de los turnos, y al final llama a {@link decideGanador}
+   */
   public void iniciarPartida() {
 
     // Bucle para las rondas
@@ -125,6 +86,10 @@ public class Partida {
 
   }
 
+  /**
+   * decideGanador compara la puntacion de cada jugador y el jugador 
+   * que tenga más puntuación gana.
+   */
   private void decideGanador() {
     ArrayList<Integer> ganador = new ArrayList<Integer>(); // Almacena la posición del jugador que tiene más
     // puntuación
@@ -247,6 +212,14 @@ public class Partida {
     return resultadoFinal;
   }
 
+  /**
+   * 
+   * comprobarExistenciaPalabra comprueba a través de un api la existencia de la palabra
+   * que llega a través del argumento palabraAFiltrar
+   * 
+   * @param palabraAFiltrar La palabra a comprobar si existe
+   * @return Devulve la palabra si existe, en caso contrario, devuelve una {@link String} vacía
+   */
   private String comprobarExistenciaPalabra(String palabraAFiltrar) {
 
     try {
@@ -274,6 +247,15 @@ public class Partida {
 
   }
 
+  /**
+   * 
+   * Compruba si la palabra está bien formada respecto a lo que dicen las normas del Boggle,
+   * es decir que que letra de la palabra tenga que estar continua o adyadcente tanto a la
+   * siguiente como a la anterior.
+   * 
+   * @param palabra Palabra para comprobar
+   * @return Devulve la palabra si está bien formada, en caso contrario, devuelve una {@link String} vacía
+   */
   private String comprobarMatrizBienFormada(String palabra) {
     char[][] c = cubilete.caras;
     palabra = palabra.toUpperCase();
@@ -364,7 +346,9 @@ public class Partida {
 
   }
 
-  // Getters
+  /**
+   * @return El número de partidas creadas
+   */
   public static int getPartidasCreadas() {
     return partidasCreadas;
   }

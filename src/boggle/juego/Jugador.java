@@ -36,25 +36,28 @@ public class Jugador {
   }
 
   /**
-   * @return the nombre
+   * @return el nombre del jugador
    */
   public String getNombre() {
     return nombre;
   }
 
   /**
-   * @param puntuacion the puntuacion to set
+   * @param puntuacion la puntuacion a poner
    */
   public void setPuntuacion(int puntuacion) {
     this.puntuacion = puntuacion;
   }
 
+  /**
+   * @param puntuacion la puntuacion a sumar
+   */
   public void sumaPuntuacion(int puntuacion) {
     this.puntuacion += puntuacion;
   }
 
   /**
-   * @return the puntuacion
+   * @return la puntuacion del jugador
    */
   public int getPuntuacion() {
     return puntuacion;
@@ -62,8 +65,7 @@ public class Jugador {
 
   /**
    * inicioTurno se encarga de iniciar el turno y seguir pidiendo palabras,
-   * después filtrandolas y, ya por ultimo, sumando los puntos que tiene de las
-   * palabras introducidas.
+   * y por último devolver una colección de palabras únicas.
    */
   public Set<String> inicioTurno() {
 
