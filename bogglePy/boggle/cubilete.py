@@ -42,7 +42,7 @@ class Cubilete:
     caras = [[None] * 5 for i in range(5)]
     
     # Método para crear el cubilete
-    def tirarDados(self):
+    def tirar_dados(self):
         """
         Crea un array bidimensional con las letras que salgan de haber "tirado" el dado
         :return: Un array bidimensional con las caras de los dados resultantes de "tirar" los dados
@@ -60,9 +60,9 @@ class Cubilete:
         Imprime por pantalla el objeto de la manera indicada en el método
         :return: Una cadena para ver graficamente el cubilete
         """
-        cadenaFinal = "\n"
+        cadena_final = "\n"
         for fila in range(5):
             for columna in range(5):
-                cadenaFinal += f"{self.caras[fila][columna]} "
-            cadenaFinal += "\n"
-        return cadenaFinal
+                cadena_final += f"{self.caras[fila][columna]} "
+            cadena_final += "\n"
+        return cadena_final
