@@ -8,7 +8,6 @@ package boggle.juego;
  * @author Antonio García García
  * @version 1.0
  */
-
 public class Cubilete {
 
   /**

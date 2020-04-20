@@ -7,7 +7,11 @@ import boggle.utiles.Teclado;
 class Main {
 
   /**
+   * 
    * Punto de entrada a la aplicación
+   * 
+   * @param args Argumentos que recibe desde la consola
+   * 
    */
   public static void main(String[] args) {
 
