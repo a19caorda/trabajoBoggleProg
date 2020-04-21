@@ -6,8 +6,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
-import javax.swing.JOptionPane;
-import boggle.utiles.Teclado;
 
 /**
  * Clase Partida.
@@ -42,6 +40,7 @@ public class Partida {
   public Partida(int numRondas, Jugador... jugadores) {
     this.numRondas = Math.min(MAXRONDAS, numRondas);
     this.jugadores = jugadores;
+    partidasCreadas++;
   }
 
   /**
@@ -151,7 +150,7 @@ public class Partida {
 
     for (String palabraNoFiltrada : aFiltrar) {
 
-      if (palabraNoFiltrada.length() < 3 && palabraNoFiltrada.length() > 23) {
+      if (palabraNoFiltrada.length() < 3 || palabraNoFiltrada.length() > 23) {
         continue;
       }
 

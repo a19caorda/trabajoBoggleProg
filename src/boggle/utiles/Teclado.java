@@ -8,9 +8,9 @@ import java.util.Scanner;
  */
 public class Teclado {
 
-  private static final Scanner SCAN = new Scanner(System.in);
+  private Scanner SCAN = new Scanner(System.in);
 
-  private Teclado() {
+  public Teclado() {
   }
 
   /**
@@ -28,11 +28,11 @@ public class Teclado {
    * 
    * @return La cadena puesta por el usuario
    */
-  public static String readString() {
+  public String readString() {
     return SCAN.nextLine();
   }
   
-  public static String readString(String mensaje) {
+  public String readString(String mensaje) {
     System.out.print(mensaje);
     return readString();
   }
@@ -42,11 +42,11 @@ public class Teclado {
    * 
    * @return El número puesta por el usuario
    */
-  public static int readInt() {
+  public int readInt() {
     return SCAN.nextInt();
   }
   
-  public static int readInt(String mensaje) {
+  public int readInt(String mensaje) {
     System.out.print(mensaje);
     return readInt();
   }
@@ -54,7 +54,7 @@ public class Teclado {
   /**
    * Método para cerrar el Scanner, debe llamarse cuando finaliza el programa
    */
-  public static void close() {
+  public void close() {
     SCAN.close();
   }
 

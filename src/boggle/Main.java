@@ -15,28 +15,33 @@ class Main {
    */
   public static void main(String[] args) {
 
-    int jug = Teclado.readInt("¿Cuántos jugadores hay? ");
-    int rondas = Teclado.readInt("¿Cuántas rondas se jugarán? ");
-    Teclado.readString();
+    Teclado teclado = new Teclado();
 
-    Jugador[] jugadores = new Jugador[jug];
+    do {
+      int jug = teclado.readInt("¿Cuántos jugadores hay? ");
+      teclado.readString();
 
-    for (int i = 0; i < jugadores.length; i++) {
-      String aux = Teclado.readString("Introduce el nombre del jugador " + (i + 1) + ": ");
-      Jugador j = new Jugador(aux);
-      jugadores[i] = j;
-    }
+      Jugador[] jugadores = new Jugador[jug];
+      int rondas = teclado.readInt("¿Cuántas rondas se jugarán? ");
 
-    Partida p = new Partida(rondas, jugadores);
-    p.iniciarPartida();
+      for (int i = 0; i < jugadores.length; i++) {
+        String aux = teclado.readString("Introduce el nombre del jugador " + (i + 1) + ": ");
+        Jugador j = new Jugador(aux);
+        jugadores[i] = j;
+      }
 
-    Teclado.close();
+      Partida p = new Partida(rondas, jugadores);
+      p.iniciarPartida();
+      
+      if (Partida.getPartidasCreadas() == 1) {
+        System.out.println("Has jugado " + Partida.getPartidasCreadas() + " partida.");
+      } else {
+        System.out.println("Has jugado " + Partida.getPartidasCreadas() + " partidas.");
+      }
+      
+    } while (teclado.readString("Quieres jugar otra partida? (Si/No) ").toLowerCase().equals("si"));
 
-    if (Partida.getPartidasCreadas() == 1) {
-      System.out.println("Has jugado " + Partida.getPartidasCreadas() + " partida.");
-    } else {
-      System.out.println("Has jugado " + Partida.getPartidasCreadas() + " partidas.");
-    }
+    teclado.close();
 
   }
 

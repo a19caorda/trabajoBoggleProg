@@ -1,16 +1,15 @@
 package boggle.juego;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.concurrent.atomic.AtomicBoolean;
-import boggle.utiles.Teclado;
+import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.awt.AWTException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import boggle.utiles.Teclado;
 
 /**
  * La clase Jugador se encarga de mantener el estado de cada jugador y de
@@ -24,7 +23,7 @@ public class Jugador {
 
   private String nombre;
   private int puntuacion = 0;
-  private final int TURNO = 30;// 180;
+  private final int TURNO = 180;
 
   /**
    * Constructor para crear un jugador
@@ -76,11 +75,11 @@ public class Jugador {
 
       @Override
       public void run() {
-
+        Teclado teclado = new Teclado();
         while (isGettingWords.get()) {
           System.out.printf("Palabra %d: ", palabras.size() + 1);
           try {
-            String nuevaPalabra = Teclado.readString();
+            String nuevaPalabra = teclado.readString();
             palabras.add(nuevaPalabra);
 
           } catch (NoSuchElementException e) {

@@ -7,7 +7,7 @@ class Jugador:
     La clase jugador se encarga de guardar el estado del jugador y de pedir las palabras
     """
 
-    __turno = 10
+    __turno = 180
     __nombre = ""
     __puntuacion = 0
     __recogiendo = False

@@ -129,7 +129,7 @@ class Partida:
 
         for palabra_no_filtrada in a_filtrar:
 
-            if (len(palabra_no_filtrada) < 3 and len(palabra_no_filtrada) > 23):
+            if (len(palabra_no_filtrada) < 3 or len(palabra_no_filtrada) > 23):
                 continue
 
             palabra_no_filtrada = self.comprobar_existencia_palabra(palabra_no_filtrada)
