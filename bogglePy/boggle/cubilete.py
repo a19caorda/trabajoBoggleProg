@@ -50,7 +50,7 @@ class Cubilete:
         dado = 0
         for fila in range(5):
             for columna in range(5):
-                self.caras[fila][columna] = self.dados[dado][random.randint(1,5)]
+                self.caras[fila][columna] = self.dados[dado][random.randint(0, 5)]
                 dado += 1
         return self.caras
     
