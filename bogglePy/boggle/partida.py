@@ -105,9 +105,9 @@ class Partida:
                     # El resto de ganadores
                 else:
                     print(self.jugadores[i].nombre + ", ", end="")
-            # Si solo hay un ganador
-            else:
-                print("Felicidades " + self.jugadores[ganador[0]].nombre + ", ¡Has ganado!")
+        # Si solo hay un ganador
+        else:
+            print("Felicidades " + self.jugadores[ganador[0]].nombre + ", ¡Has ganado!")
 
         print("Recuento de puntuaciones: ")
         for jugador in self.__jugadores:
