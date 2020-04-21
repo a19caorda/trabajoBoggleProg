@@ -34,7 +34,7 @@ class Jugador:
             palabras.append( input(f"Palabra {len(palabras) + 1:02}: ").lower() )
         
 
-    def inicioTurno(self):
+    def inicio_turno(self):
         """
         Con este método se inicia el turno que consiste en:
             - Creación de otro hilo para recoger las palabras
