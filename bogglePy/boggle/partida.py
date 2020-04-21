@@ -20,11 +20,11 @@ from boggle import cubilete
  * @version 1.1.
 """
 
-"""
-@param numRondas El número de rondas que se jugará
-@param jugadores Los jugadores que van a participar
-"""
 class Partida:
+    """
+    @param numRondas El número de rondas que se jugará
+    @param jugadores Los jugadores que van a participar
+    """
     # Atributos de la clase, el número de partidas creadas.
     __MAXRONDAS = 5
     __partidas_creadas = 0
@@ -35,16 +35,16 @@ class Partida:
     __cubilete = Cubilete()
 
     def __init__(self, num_rondas, jugadores):
-        self.__partidas_creadas += 1
+        self.__class__.__partidas_creadas += 1
         self.__num_rondas = min(self.__MAXRONDAS, num_rondas)
 
         self.__jugadores = jugadores
 
 
-    """
-    iniciar_partida se encarga del desarrollo de los turnos, y al final llama a {@link decide_ganador}
-    """
     def iniciar_partida(self):
+        """
+        iniciar_partida se encarga del desarrollo de los turnos, y al final llama a {@link decide_ganador}
+        """
 
         # Bucle para las rondas
         for i in range(0, self.__num_rondas):
@@ -73,11 +73,9 @@ class Partida:
             print("Fin de la ronda " + str(i + 1) + ".")
 
         self.decide_ganador()
-    """
-    decide_ganador compara la puntacion de cada jugador y el jugador 
-    que tenga más puntuación gana.
-    """
     def decide_ganador(self):
+
+
         ganador = []  # Almacena la posición del jugador que tiene más
         # puntuación
         aux = 0  # Almacena la puntuación máxima
@@ -115,16 +113,15 @@ class Partida:
         for jugador in self.__jugadores:
             print(jugador.nombre + ": " + str(jugador.puntuacion))
 
-    """
-    comprueba se encarga de comprobar que las palabras sean correctas y filtra
-    las incorrectas.
-    
-    @param aFiltrar La lista de palabras no filtradas
-    @return La lista de palabras filtrada
-  """
 
     def comprueba(self, a_filtrar):
-
+        """
+        comprueba se encarga de comprobar que las palabras sean correctas y filtra
+        las incorrectas.
+        
+        @param aFiltrar La lista de palabras no filtradas
+        @return La lista de palabras filtrada
+        """
         palabras_filtradas = []
 
         for palabra_no_filtrada in a_filtrar:
@@ -146,14 +143,14 @@ class Partida:
 
         return palabras_filtradas
 
-    """
-    suma_puntos se encarga de sumar los puntos de las palabras
-    
-    @param palabras La lista de palabras que ya ha sido filtrada
-    @return La suma de lo que puntúa cada palabra
-  """
 
     def suma_puntos(self, palabras):
+        """
+        suma_puntos se encarga de sumar los puntos de las palabras
+        
+        @param palabras La lista de palabras que ya ha sido filtrada
+        @return La suma de lo que puntúa cada palabra
+        """
 
         resultado_final = 0
 
@@ -172,14 +169,14 @@ class Partida:
                 resultado_final += 11
 
         return resultado_final
-    """
-    comprobar_existencia_palabra comprueba a través de un api la existencia de la palabra
-    que llega a través del argumento palabraAFiltrar
-    
-    @param palabraAFiltrar La palabra a comprobar si existe
-    @return Devulve la palabra si existe, en caso contrario, devuelve una cadena vacía
-    """
     def comprobar_existencia_palabra(self, palabra_a_filtrar: str):
+        """
+        comprobar_existencia_palabra comprueba a través de un api la existencia de la palabra
+        que llega a través del argumento palabraAFiltrar
+        
+        @param palabraAFiltrar La palabra a comprobar si existe
+        @return Devulve la palabra si existe, en caso contrario, devuelve una cadena vacía
+        """
 
         try:
 
@@ -196,15 +193,15 @@ class Partida:
 
         return palabra_a_filtrar
 
-    """
-    Compruba si la palabra está bien formada respecto a lo que dicen las normas del Boggle,
-    es decir que que letra de la palabra tenga que estar continua o adyadcente tanto a la
-    siguiente como a la anterior.
-    
-    @param palabra Palabra para comprobar
-    @return Devulve la palabra si está bien formada, en caso contrario, devuelve una {@link String} vacía
-    """
     def comprobar_matriz_bien_formada(self, palabra):
+        """
+        Compruba si la palabra está bien formada respecto a lo que dicen las normas del Boggle,
+        es decir que que letra de la palabra tenga que estar continua o adyadcente tanto a la
+        siguiente como a la anterior.
+        
+        @param palabra Palabra para comprobar
+        @return Devulve la palabra si está bien formada, en caso contrario, devuelve una {@link String} vacía
+        """
         c = self.__cubilete.caras
         palabra = palabra.upper()
         validador = ""
@@ -288,8 +285,8 @@ class Partida:
         return ""
 
     # Getters
-    """
-    @return El número de partidas creadas
-    """
     def get_partidas_creadas(self):
-        return self.__partidas_creadas
+        """
+        @return El número de partidas creadas
+        """
+        return self.__class__.__partidas_creadas

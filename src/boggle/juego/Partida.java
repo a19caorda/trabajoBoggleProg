@@ -44,7 +44,8 @@ public class Partida {
   }
 
   /**
-   * iniciarPartida se encarga del desarrollo de los turnos, y al final llama a {@link decideGanador}
+   * iniciarPartida se encarga del desarrollo de los turnos, y al final llama a
+   * {@link decideGanador}
    */
   public void iniciarPartida() {
 
@@ -86,8 +87,8 @@ public class Partida {
   }
 
   /**
-   * decideGanador compara la puntacion de cada jugador y el jugador 
-   * que tenga más puntuación gana.
+   * decideGanador compara la puntacion de cada jugador y el jugador que tenga más
+   * puntuación gana.
    */
   private void decideGanador() {
     ArrayList<Integer> ganador = new ArrayList<Integer>(); // Almacena la posición del jugador que tiene más
@@ -213,11 +214,12 @@ public class Partida {
 
   /**
    * 
-   * comprobarExistenciaPalabra comprueba a través de un api la existencia de la palabra
-   * que llega a través del argumento palabraAFiltrar
+   * comprobarExistenciaPalabra comprueba a través de un api la existencia de la
+   * palabra que llega a través del argumento palabraAFiltrar
    * 
    * @param palabraAFiltrar La palabra a comprobar si existe
-   * @return Devulve la palabra si existe, en caso contrario, devuelve una {@link String} vacía
+   * @return Devulve la palabra si existe, en caso contrario, devuelve una
+   *         {@link String} vacía
    */
   private String comprobarExistenciaPalabra(String palabraAFiltrar) {
 
@@ -248,12 +250,13 @@ public class Partida {
 
   /**
    * 
-   * Compruba si la palabra está bien formada respecto a lo que dicen las normas del Boggle,
-   * es decir que que letra de la palabra tenga que estar continua o adyadcente tanto a la
-   * siguiente como a la anterior.
+   * Compruba si la palabra está bien formada respecto a lo que dicen las normas
+   * del Boggle, es decir que que letra de la palabra tenga que estar continua o
+   * adyadcente tanto a la siguiente como a la anterior.
    * 
    * @param palabra Palabra para comprobar
-   * @return Devulve la palabra si está bien formada, en caso contrario, devuelve una {@link String} vacía
+   * @return Devulve la palabra si está bien formada, en caso contrario, devuelve
+   *         una {@link String} vacía
    */
   private String comprobarMatrizBienFormada(String palabra) {
     char[][] c = cubilete.caras;
