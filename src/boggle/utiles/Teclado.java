@@ -1,61 +1,49 @@
 package boggle.utiles;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-/**
- * Teclado es un singleton que se encarga del input del programa Para usarlo se
- * debe usar el método estático `getTeclado()`
- */
 public class Teclado {
 
-  private Scanner SCAN = new Scanner(System.in);
+  private static BufferedReader scanner = new BufferedReader(new InputStreamReader(System.in));
 
-  public Teclado() {
-  }
-
-  /**
-   * Método estático para obtener la instancia
-   * 
-   * @return Instancia de clase Teclado
-   
-  public static Teclado getTeclado() {
-    return teclado;
-  }
-  */
-
-  /**
-   * Método para obtener una cadena que introduzca el usuario
-   * 
-   * @return La cadena puesta por el usuario
-   */
-  public String readString() {
-    return SCAN.nextLine();
-  }
-  
-  public String readString(String mensaje) {
-    System.out.print(mensaje);
+  public static String readString(String prompt) {
+    System.out.print(prompt);
     return readString();
   }
 
-  /**
-   * Método para obtener un número que introduzca el usuario
-   * 
-   * @return El número puesta por el usuario
-   */
-  public int readInt() {
-    return SCAN.nextInt();
-  }
-  
-  public int readInt(String mensaje) {
-    System.out.print(mensaje);
-    return readInt();
+  public static String readString() {
+
+    for (;;)
+      try {
+        return scanner.readLine();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
   }
 
-  /**
-   * Método para cerrar el Scanner, debe llamarse cuando finaliza el programa
-   */
-  public void close() {
-    SCAN.close();
+  public static float readFloat(String prompt) {
+    System.out.print(prompt);
+    for (;;) {
+      try {
+        return Float.parseFloat(readString());
+      } catch (NumberFormatException e) {
+        System.err.println("Introduce un decimal válido: ");
+      }
+    }
+  }
+
+  public static int readInt(String prompt) {
+    System.out.print(prompt);
+    for (;;) {
+      try {
+        return Integer.parseInt(readString());
+      } catch (NumberFormatException e) {
+        System.err.println("Introduce un número entero válido: ");
+      }
+    }
   }
 
 }

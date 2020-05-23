@@ -1,9 +1,6 @@
 package boggle.juego;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -91,7 +88,7 @@ public class Partida {
    * puntuación gana.
    */
   private void decideGanador() {
-    ArrayList<Integer> ganador = new ArrayList<Integer>(); // Almacena la posición del jugador que tiene más
+    ArrayList<Integer> ganadores = new ArrayList<Integer>(); // Almacena la posición del jugador que tiene más
     // puntuación
     int aux = 0; // Almacena la puntuación máxima
 
@@ -100,35 +97,42 @@ public class Partida {
 
       // Si el jugador a leer tiene más puntuación
       if (this.jugadores[i].getPuntuacion() > aux) {
-        ganador.clear();
-        ganador.add(i);
+        ganadores.clear();
+        ganadores.add(i);
         aux = this.jugadores[i].getPuntuacion();
 
         // Si el jugador a leer tiene la misma puntuación
       } else if (this.jugadores[i].getPuntuacion() == aux) {
-        ganador.add(i);
+        ganadores.add(i);
       }
 
     }
 
+    for (Integer integer : ganadores) {
+      Jugador ganador = jugadores[integer];
+
+      ganador.sumarPartidasGanadas();
+
+    }
+
     // Si hay más de un ganador
-    if (ganador.size() > 1) {
+    if (ganadores.size() > 1) {
       System.out.print("Felicidades a los ganadores, ");
 
-      for (int i = 0; i < ganador.size(); i++) {
+      for (int i = 0; i < ganadores.size(); i++) {
         // El último ganador de la lista
-        if (i + 1 == ganador.size()) {
-          System.out.println("y " + this.jugadores[ganador.get(i)].getNombre() + ".");
+        if (i + 1 == ganadores.size()) {
+          System.out.println("y " + this.jugadores[ganadores.get(i)].getNombre() + ".");
 
           // El resto de ganadores
         } else {
-          System.out.print(this.jugadores[ganador.get(i)].getNombre() + ", ");
+          System.out.print(this.jugadores[ganadores.get(i)].getNombre() + ", ");
         }
 
       }
       // Si solo hay un ganador
     } else {
-      System.out.println("Felicidades " + this.jugadores[ganador.get(0)].getNombre() + ", ¡Has ganado!");
+      System.out.println("Felicidades " + this.jugadores[ganadores.get(0)].getNombre() + ", ¡Has ganado!");
 
     }
 
@@ -186,26 +190,26 @@ public class Partida {
 
     for (String palabra : palabras) {
       switch (palabra.length()) {
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-          break;
-        case 4:
-          resultadoFinal += 1;
-          break;
-        case 5:
-          resultadoFinal += 2;
-          break;
-        case 6:
-          resultadoFinal += 3;
-          break;
-        case 7:
-          resultadoFinal += 5;
-          break;
-        default:
-          resultadoFinal += 11;
-          break;
+      case 0:
+      case 1:
+      case 2:
+      case 3:
+        break;
+      case 4:
+        resultadoFinal += 1;
+        break;
+      case 5:
+        resultadoFinal += 2;
+        break;
+      case 6:
+        resultadoFinal += 3;
+        break;
+      case 7:
+        resultadoFinal += 5;
+        break;
+      default:
+        resultadoFinal += 11;
+        break;
       }
     }
 
@@ -224,22 +228,13 @@ public class Partida {
   private String comprobarExistenciaPalabra(String palabraAFiltrar) {
 
     try {
+      Process p = Runtime.getRuntime().exec("python raescript.py " + palabraAFiltrar);
 
-      URL url = new URL(
-          String.format("https://od-api.oxforddictionaries.com:443/api/v2/entries/es/%s?lexicalCategory=noun,verb",
-              palabraAFiltrar.toLowerCase()));
-      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-      conn.setRequestMethod("GET");
-      conn.setRequestProperty("app_id", "46a14e95");
-      conn.setRequestProperty("app_key", "384d633d7a131cd0ab86fb6322665e15");
-      conn.connect();
-
-      if (conn.getResponseCode() != 200) {
-        return "";
+      while (p.isAlive()) {
       }
 
-    } catch (MalformedURLException e) {
-      return "";
+      if (p.exitValue() > 0)
+        return "";
     } catch (IOException e) {
       return "";
     }
@@ -346,6 +341,12 @@ public class Partida {
 
     return "";
 
+  }
+
+  public void guardarArchivo() throws IOException {
+    for (Jugador jugador : jugadores) {
+      jugador.guardarArchivo();
+    }
   }
 
   /**
