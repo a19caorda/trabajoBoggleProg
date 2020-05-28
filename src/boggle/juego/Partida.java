@@ -26,7 +26,7 @@ public class Partida {
   private static int partidasCreadas = 0;
 
   // Atributos de la partida.
-  public Cubilete cubilete = new Cubilete();
+  private Cubilete cubilete = new Cubilete();
   private Jugador jugadores[];
   private int numRondas;
 
